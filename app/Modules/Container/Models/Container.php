@@ -5,7 +5,7 @@ namespace App\Modules\Container\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
+use App\Modules\ShippingLine\Models\ShippingLine;
 use App\Modules\TypeOfEquipment\Models\TypeOfEquipment;
 use App\Modules\Brand\Models\Brand;
 use App\Modules\Department\Models\Department;
@@ -36,7 +36,10 @@ class Container extends Model
     {
         return $this->hasMany(Estimate::class);
     }
-
+    public function shippingLine()
+    {
+        return $this->belongsTo(ShippingLine::class);
+    }
     protected $casts = [
         'created_at' => 'datetime:d/m/Y H:i',
         'updated_at' => 'datetime:d/m/Y H:i',
