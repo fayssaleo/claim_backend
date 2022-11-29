@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('container', function (Blueprint $table) {
-            
+
             $table->bigIncrements("id");
             $table->string("name")->nullable();
             $table->string("categorie_of_container")->nullable();
@@ -29,7 +29,8 @@ return new class extends Migration
             $table->bigInteger('department_id')->unsigned()->nullable();
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
 
-
+            $table->bigInteger('shipping_line_id')->unsigned()->nullable();
+            $table->foreign('shipping_line_id')->references('id')->on('shipping_lines')->onDelete('cascade');
 
             $table->string("status")->nullable();
             $table->date("incident_date")->nullable();
