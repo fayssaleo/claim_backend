@@ -4,6 +4,9 @@ namespace App\Modules\Fonction\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Modules\Fonction\Models\Fonction;
+use App\Modules\Department\Models\Department;
 
 class FonctionController extends Controller
 {

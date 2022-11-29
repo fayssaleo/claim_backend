@@ -4,6 +4,7 @@ namespace App\Modules\Automobile\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 use App\Modules\Brand\Models\Brand;
 use App\Modules\Automobile\Models\Automobile;

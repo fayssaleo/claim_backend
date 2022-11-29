@@ -5,6 +5,7 @@ namespace App\Modules\NatureOfDamage\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Modules\NatureOfDamage\Models\NatureOfDamage;
+use Illuminate\Support\Facades\Validator;
 
 
 class NatureOfDamageController extends Controller
