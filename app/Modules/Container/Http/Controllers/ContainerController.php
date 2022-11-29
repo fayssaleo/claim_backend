@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Modules\Container\Models\Container;
 use App\Modules\NatureOfDamage\Models\NatureOfDamage;
 use App\Modules\TypeOfEquipment\Models\TypeOfEquipment;
+
 class ContainerController extends Controller
 {
-
     public function createOrUpdateContainer(Request $request){
 
         if($request->id==0){
@@ -144,6 +144,73 @@ class ContainerController extends Controller
             $container->outsourcer_company_name=$request->outsourcer_company_name;
             $container->thirdparty_company_name=$request->thirdparty_company_name;
             $container->thirdparty_Activity_comments=$request->thirdparty_Activity_comments;
+
+            if($request->nature_of_damage["id"]==0){
+                $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndSave($request->nature_of_damage);
+                if($nature_of_damage_returnedValue["IsReturnErrorRespone"]){
+                    return [
+                        "payload" => $nature_of_damage_returnedValue["payload"],
+                        "status" => $nature_of_damage_returnedValue["status"]
+                    ];
+                }
+                $container->nature_of_damage_id=$nature_of_damage_returnedValue["payload"]->id;
+            } else {
+                $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndUpdate($request->nature_of_damage);
+
+                if($nature_of_damage_returnedValue["IsReturnErrorRespone"]){
+                    return [
+                        "payload" => $nature_of_damage_returnedValue["payload"],
+                        "status" => $nature_of_damage_returnedValue["status"]
+                    ];
+                }
+            }
+
+
+            if($request->brand["id"]==0){
+                $brand_returnedValue=$this->brand_confirmAndSave($request->brand);
+
+                if($brand_returnedValue["IsReturnErrorRespone"]){
+                    return [
+                        "payload" => $brand_returnedValue["payload"],
+                        "status" => $brand_returnedValue["status"]
+                    ];
+                }
+                $container->brand_id=$brand_returnedValue["payload"]->id;
+            }
+            else{
+                $band_returnedValue=$this->band_confirmAndUpdate($request->band);
+
+                if($band_returnedValue["IsReturnErrorRespone"]){
+                    return [
+                        "payload" => $band_returnedValue["payload"],
+                        "status" => $band_returnedValue["status"]
+                    ];
+                }
+            }
+
+
+            if($request->type_of_equipment["id"]==0){
+                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndSave($request->type_of_equipment);
+                if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
+                    return [
+                        "payload" => $type_of_equipment_returnedValue["payload"],
+                        "status" => $type_of_equipment_returnedValue["status"]
+                    ];
+                }
+                $container->brand_id=$type_of_equipment_returnedValue["payload"]->id;
+            }
+            else{
+                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndUpdate($request->type_of_equipment);
+
+                if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
+                    return [
+                        "payload" => $type_of_equipment_returnedValue["payload"],
+                        "status" => $type_of_equipment_returnedValue["status"]
+                    ];
+                }
+            }
+
+            $container->save();
 
             return [
                 "payload" => $container,
