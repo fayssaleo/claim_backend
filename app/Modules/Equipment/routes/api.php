@@ -11,5 +11,4 @@ Route::group([
 ], function ($router) {
     Route::post('/createOrUpdateEquipment', [EquipmentController::class, 'createOrUpdateEquipment']);
 
-
 });
