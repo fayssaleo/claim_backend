@@ -1,38 +1,37 @@
 <?php
 
-namespace App\Modules\Fonction\Http\Controllers;
+namespace App\Modules\ShippingLine\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Modules\Fonction\Models\Fonction;
+use App\Modules\ShippingLine\Models\ShippingLine;
 use App\Modules\Department\Models\Department;
+use Illuminate\Support\Facades\Validator;
 
-class FonctionController extends Controller
+class ShippingLineController extends Controller
 {
-
     public function index(){
 
-        $fonctions=Fonction::with('department')->get();
+        $shippingLine=ShippingLine::with('department')->get();
 
         return [
-            "payload" => $fonctions,
+            "payload" => $shippingLine,
             "status" => "200_00"
         ];
     }
 
     public function get($id){
-        $fonction=Fonction::find($id);
-        if(!$fonction){
+        $shippingLine=ShippingLine::find($id);
+        if(!$shippingLine){
             return [
                 "payload" => "The searched row does not exist !",
                 "status" => "404_1"
             ];
         }
         else {
-            $fonction->department=$fonction->department;
+            $shippingLine->department=$shippingLine->department;
             return [
-                "payload" => $fonction,
+                "payload" => $shippingLine,
                 "status" => "200_1"
             ];
         }
@@ -40,7 +39,7 @@ class FonctionController extends Controller
 
     public function create(Request $request){
         $validator = Validator::make($request->all(), [
-            "name" => "required|string|unique:fonctions,name",
+            "name" => "required|string|unique:shippingLine,name",
             "department_id" => "required",
         ]);
         if ($validator->fails()) {
@@ -56,11 +55,11 @@ class FonctionController extends Controller
                 "status"=>"department_404",
             ];
         }
-        $fonction=Fonction::make($request->all());
-        $fonction->save();
-        $fonction->department=$fonction->department;
+        $shippingLine=ShippingLine::make($request->all());
+        $shippingLine->save();
+        $shippingLine->department=$shippingLine->department;
         return [
-            "payload" => $fonction,
+            "payload" => $shippingLine,
             "status" => "200"
         ];
     }
@@ -75,17 +74,17 @@ class FonctionController extends Controller
                 "status" => "406_2"
             ];
         }
-        $fonction=Fonction::find($request->id);
-        if (!$fonction) {
+        $shippingLine=ShippingLine::find($request->id);
+        if (!$shippingLine) {
             return [
                 "payload" => "The searched row does not exist !",
                 "status" => "404_3"
             ];
         }
-        if($request->name!=$fonction->name){
-            if(Fonction::where("name",$request->name)->count()>0)
+        if($request->name!=$shippingLine->name){
+            if(ShippingLine::where("name",$request->name)->count()>0)
                 return [
-                    "payload" => "The fonction has been already taken ! ",
+                    "payload" => "The shippingLine has been already taken ! ",
                     "status" => "406_2"
                 ];
         }
@@ -96,31 +95,32 @@ class FonctionController extends Controller
                 "status"=>"department_404",
             ];
         }
-        $fonction->name=$request->name;
-        $fonction->department_id=$request->department_id;
+        $shippingLine->name=$request->name;
+        $shippingLine->department_id=$request->department_id;
 
-        $fonction->save();
-        $fonction->department=$fonction->department;
+        $shippingLine->save();
+        $shippingLine->department=$shippingLine->department;
         return [
-            "payload" => $fonction,
+            "payload" => $shippingLine,
             "status" => "200"
         ];
     }
 
     public function delete(Request $request){
-        $fonction=Fonction::find($request->id);
-        if(!$fonction){
+        $shippingLine=ShippingLine::find($request->id);
+        if(!$shippingLine){
             return [
                 "payload" => "The searched row does not exist !",
                 "status" => "404_4"
             ];
         }
         else {
-            $fonction->delete();
+            $shippingLine->delete();
             return [
                 "payload" => "Deleted successfully",
                 "status" => "200_4"
             ];
         }
     }
+
 }

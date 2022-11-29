@@ -1,29 +1,42 @@
 <?php
 
-namespace App\Modules\NatureOfDamage\Http\Controllers;
+namespace App\Modules\Estimate\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Modules\NatureOfDamage\Models\NatureOfDamage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use App\Modules\Estimate\Models\Estimate;
+use \stdClass;
 
-
-class NatureOfDamageController extends Controller
+class EstimateController extends Controller
 {
 
+    
     public function index(){
+        $estimtesWithAmount=collect ([]);
+        $estimate=Estimate::with("claim")   
+        ->get();
+        for ($i=0; $i < count($estimate); $i++) { 
+            $EstimateModel = new stdClass();
 
-        $natureOfDamage=NatureOfDamage::all();
 
+            $EstimateModel->estimate=$estimate[$i];
+            $EstimateModel->estimate_amount = $estimate[$i]->equipment_purchase_costs+$estimate[$i]->installation_and_facilities_costs+$estimate[$i]->rransportation_costs;
+
+
+            //array_push($estimtesWithAmount,$EstimateModel);
+            $estimtesWithAmount->push($EstimateModel);
+        }
         return [
-            "payload" => $natureOfDamage,
+            "payload" => $estimtesWithAmount,
             "status" => "200_00"
         ];
     }
 
     public function get($id){
-        $natureOfDamage=NatureOfDamage::find($id);
-        if(!$natureOfDamage){
+        $estimate=Estimate::find($id);
+        if(!$estimate){
             return [
                 "payload" => "The searched row does not exist !",
                 "status" => "404_1"
@@ -31,7 +44,7 @@ class NatureOfDamageController extends Controller
         }
         else {
             return [
-                "payload" => $natureOfDamage,
+                "payload" => $estimate,
                 "status" => "200_1"
             ];
         }
@@ -39,7 +52,7 @@ class NatureOfDamageController extends Controller
 
     public function create(Request $request){
         $validator = Validator::make($request->all(), [
-            "name" => "required:nature_of_damages,name",
+            
         ]);
         if ($validator->fails()) {
             return [
@@ -47,10 +60,10 @@ class NatureOfDamageController extends Controller
                 "status" => "406_2"
             ];
         }
-        $natureOfDamage=NatureOfDamage::make($request->all());
-        $natureOfDamage->save();
+        $estimate=Estimate::make($request->all());
+        $estimate->save();
         return [
-            "payload" => $natureOfDamage,
+            "payload" => $estimate,
             "status" => "200"
         ];
     }
@@ -65,44 +78,41 @@ class NatureOfDamageController extends Controller
                 "status" => "406_2"
             ];
         }
-        $natureOfDamage=NatureOfDamage::find($request->id);
-        if (!$natureOfDamage) {
+        $estimate=Estimate::find($request->id);
+        if (!$estimate) {
             return [
                 "payload" => "The searched row does not exist !",
                 "status" => "404_3"
             ];
         }
-        if($request->name!=$natureOfDamage->name){
-            if(NatureOfDamage::where("name",$request->name)->count()>0)
-                return [
-                    "payload" => "The natureOfDamage has been already taken ! ",
-                    "status" => "406_2"
-                ];
-        }
-        $natureOfDamage->name=$request->name;
+       
+        $estimate->equipment_purchase_costs=$request->equipment_purchase_costs;
+        $estimate->installation_and_facilities_costs=$request->installation_and_facilities_costs;
+        $estimate->rransportation_costs=$request->rransportation_costs;
+        $estimate->claime_id=$request->claime_id;
 
-        $natureOfDamage->save();
+
+        $estimate->save();
         return [
-            "payload" => $natureOfDamage,
+            "payload" => $estimate,
             "status" => "200"
         ];
     }
 
     public function delete(Request $request){
-        $natureOfDamage=NatureOfDamage::find($request->id);
-        if(!$natureOfDamage){
+        $estimate=Estimate::find($request->id);
+        if(!$estimate){
             return [
                 "payload" => "The searched row does not exist !",
                 "status" => "404_4"
             ];
         }
         else {
-            $natureOfDamage->delete();
+            $estimate->delete();
             return [
                 "payload" => "Deleted successfully",
                 "status" => "200_4"
             ];
         }
     }
-
 }
