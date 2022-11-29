@@ -12,6 +12,8 @@ use App\Modules\Container\Models\Container;
 class TypeOfEquipment extends Model
 {
     use HasFactory;
+    protected $table = 'type_of_equipments';
+
     public function Equipments(){
         return $this->hasMany(Equipment::class);
     }

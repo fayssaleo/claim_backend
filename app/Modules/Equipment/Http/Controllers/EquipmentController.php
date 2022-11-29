@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Validator;
 class EquipmentController extends Controller
 {
     public function createOrUpdateEquipment(Request $request){
-
         if($request->id==0){
 
             $validator = Validator::make($request->all(), [
@@ -30,8 +29,8 @@ class EquipmentController extends Controller
 
 
 
-            if($request->nature_of_damages["id"]==0){
-                $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndSave($request->nature_of_damages);
+            if($request->nature_of_damage["id"]==0){
+                $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndSave($request->nature_of_damage);
                 if($nature_of_damage_returnedValue["IsReturnErrorRespone"]){
                     return [
                         "payload" => $nature_of_damage_returnedValue["payload"],
@@ -40,7 +39,7 @@ class EquipmentController extends Controller
                 }
                 $equipment->nature_of_damage_id=$nature_of_damage_returnedValue["payload"]->id;
             } else {
-                $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndUpdate($request->nature_of_damages);
+                $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndUpdate($request->nature_of_damage);
 
                 if($nature_of_damage_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -52,7 +51,7 @@ class EquipmentController extends Controller
 
 
             if($request->brand["id"]==0){
-                $brand_returnedValue=$this->brand_confirmAndSave($request->brands);
+                $brand_returnedValue=$this->brand_confirmAndSave($request->brand);
 
                 if($brand_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -63,7 +62,7 @@ class EquipmentController extends Controller
                 $equipment->brand_id=$brand_returnedValue["payload"]->id;
             }
             else{
-                $band_returnedValue=$this->band_confirmAndUpdate($request->bands);
+                $band_returnedValue=$this->band_confirmAndUpdate($request->band);
 
                 if($band_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -75,7 +74,7 @@ class EquipmentController extends Controller
 
 
             if($request->type_of_equipment["id"]==0){
-                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndSave($request->type_of_equipments);
+                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndSave($request->type_of_equipment);
                 if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
                     return [
                         "payload" => $type_of_equipment_returnedValue["payload"],
@@ -85,7 +84,7 @@ class EquipmentController extends Controller
                 $equipment->brand_id=$type_of_equipment_returnedValue["payload"]->id;
             }
             else{
-                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndUpdate($request->type_of_equipments);
+                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndUpdate($request->type_of_equipment);
 
                 if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -145,14 +144,84 @@ class EquipmentController extends Controller
             $equipment->thirdparty_company_name=$request->thirdparty_company_name;
             $equipment->thirdparty_Activity_comments=$request->thirdparty_Activity_comments;
 
+
+            if($request->nature_of_damage["id"]==0){
+                $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndSave($request->nature_of_damage);
+                if($nature_of_damage_returnedValue["IsReturnErrorRespone"]){
+                    return [
+                        "payload" => $nature_of_damage_returnedValue["payload"],
+                        "status" => $nature_of_damage_returnedValue["status"]
+                    ];
+                }
+                $equipment->nature_of_damage_id=$nature_of_damage_returnedValue["payload"]->id;
+            } else {
+                $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndUpdate($request->nature_of_damage);
+
+                if($nature_of_damage_returnedValue["IsReturnErrorRespone"]){
+                    return [
+                        "payload" => $nature_of_damage_returnedValue["payload"],
+                        "status" => $nature_of_damage_returnedValue["status"]
+                    ];
+                }
+            }
+
+
+            if($request->brand["id"]==0){
+                $brand_returnedValue=$this->brand_confirmAndSave($request->brand);
+
+                if($brand_returnedValue["IsReturnErrorRespone"]){
+                    return [
+                        "payload" => $brand_returnedValue["payload"],
+                        "status" => $brand_returnedValue["status"]
+                    ];
+                }
+                $equipment->brand_id=$brand_returnedValue["payload"]->id;
+            }
+            else{
+                $band_returnedValue=$this->band_confirmAndUpdate($request->band);
+
+                if($band_returnedValue["IsReturnErrorRespone"]){
+                    return [
+                        "payload" => $band_returnedValue["payload"],
+                        "status" => $band_returnedValue["status"]
+                    ];
+                }
+            }
+
+
+            if($request->type_of_equipment["id"]==0){
+                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndSave($request->type_of_equipment);
+                if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
+                    return [
+                        "payload" => $type_of_equipment_returnedValue["payload"],
+                        "status" => $type_of_equipment_returnedValue["status"]
+                    ];
+                }
+                $equipment->brand_id=$type_of_equipment_returnedValue["payload"]->id;
+            }
+            else{
+                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndUpdate($request->type_of_equipment);
+
+                if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
+                    return [
+                        "payload" => $type_of_equipment_returnedValue["payload"],
+                        "status" => $type_of_equipment_returnedValue["status"]
+                    ];
+                }
+            }
+
+            $equipment->save();
+
+
+
             return [
                 "payload" => $equipment,
                 "status" => "200"
             ];
 
         }
+        return $equipment;
     }
-
 
     public function nature_of_damage_confirmAndSave($NatureOfDamage){
         $validator = Validator::make($NatureOfDamage, [
@@ -171,14 +240,14 @@ class EquipmentController extends Controller
             "payload" => $natureOfDamage,
             "status" => "200",
             "IsReturnErrorRespone" => false
-
+            
         ];
     }
     public function nature_of_damage_confirmAndUpdate($NatureOfDamage){
         $natureOfDamage=NatureOfDamage::find($NatureOfDamage['id']);
             if(!$natureOfDamage){
                 return [
-                    "payload"=>"natureOfDamage is not exist !",
+                    "payload"=>"nature Of Damage is not exist !",
                     "status"=>"404_2",
                     "IsReturnErrorRespone" => true
                 ];
@@ -193,7 +262,6 @@ class EquipmentController extends Controller
                 ];
             }
     }
-
 
     public function brand_confirmAndSave($Brand){
         $validator = Validator::make($Brand, [
@@ -236,7 +304,6 @@ class EquipmentController extends Controller
             }
     }
 
-
     public function type_of_equipment_confirmAndSave($Type_of_equipment){
         $validator = Validator::make($Type_of_equipment, [
             "name" => "required:type_of_equipments,name",
@@ -277,8 +344,5 @@ class EquipmentController extends Controller
                 ];
             }
     }
-
-
-
 
 }
