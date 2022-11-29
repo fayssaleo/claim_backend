@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Modules\Equipment\Models;
+namespace App\Modules\Container\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 
 use App\Modules\TypeOfEquipment\Models\TypeOfEquipment;
 use App\Modules\Brand\Models\Brand;
@@ -11,22 +12,14 @@ use App\Modules\Department\Models\Department;
 use App\Modules\NatureOfDamage\Models\NatureOfDamage;
 use App\Modules\Claim\Models\Claim;
 use App\Modules\Estimate\Models\Estimate;
-
-
-class Equipment extends Model
+class Container extends Model
 {
     use HasFactory;
-
     protected $guarded= ["id"];
 
     public function typeOfEquipment()
     {
         return $this->belongsTo(TypeOfEquipment::class);
-    }
-
-    public function Brand()
-    {
-        return $this->belongsTo(Brand::class);
     }
 
     public function natureOfDamage()
@@ -38,7 +31,6 @@ class Equipment extends Model
     {
         return $this->belongsTo(Department::class);
     }
-
 
     public function estimate()
     {

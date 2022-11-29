@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Equipment\Models;
+namespace App\Modules\Automobile\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,8 +12,7 @@ use App\Modules\NatureOfDamage\Models\NatureOfDamage;
 use App\Modules\Claim\Models\Claim;
 use App\Modules\Estimate\Models\Estimate;
 
-
-class Equipment extends Model
+class Automobile extends Model
 {
     use HasFactory;
 
@@ -39,6 +38,10 @@ class Equipment extends Model
         return $this->belongsTo(Department::class);
     }
 
+    public function claim()
+    {
+        return $this->hasOne(Claim::class);
+    }
 
     public function estimate()
     {
