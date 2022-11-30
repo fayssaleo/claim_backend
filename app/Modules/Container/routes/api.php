@@ -10,6 +10,8 @@ Route::group([
 
 ], function ($router) {
     Route::post('/createOrUpdateContainer', [ContainerController::class, 'createOrUpdateContainer']);
+    Route::get('/allClaim', [ContainerController::class, 'allClaim']);
+    Route::get('/allIncident', [ContainerController::class, 'allIncident']);
 
 
 });

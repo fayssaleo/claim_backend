@@ -40,6 +40,7 @@ class EquipmentController extends Controller
                 $equipment->nature_of_damage_id=$nature_of_damage_returnedValue["payload"]->id;
             } else {
                 $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndUpdate($request->nature_of_damage);
+                $equipment->nature_of_damage_id=$request->nature_of_damage["id"];
 
                 if($nature_of_damage_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -62,7 +63,8 @@ class EquipmentController extends Controller
                 $equipment->brand_id=$brand_returnedValue["payload"]->id;
             }
             else{
-                $band_returnedValue=$this->band_confirmAndUpdate($request->band);
+                $band_returnedValue=$this->brand_confirmAndUpdate($request->brand);
+                $equipment->brand_id=$request->brand["id"];
 
                 if($band_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -81,10 +83,11 @@ class EquipmentController extends Controller
                         "status" => $type_of_equipment_returnedValue["status"]
                     ];
                 }
-                $equipment->brand_id=$type_of_equipment_returnedValue["payload"]->id;
+                $equipment->type_of_equipment_id=$type_of_equipment_returnedValue["payload"]->id;
             }
             else{
                 $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndUpdate($request->type_of_equipment);
+                $equipment->type_of_equipment_id=$request->type_of_equipment["id"];
 
                 if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -223,6 +226,31 @@ class EquipmentController extends Controller
         return $equipment;
     }
 
+    public function allClaim(){
+        $equipment=Equipment::select()->where('ClaimOrIncident', "Claim")->with("typeOfEquipment")
+        ->with("brand")
+        ->with("natureOfDamage")
+        ->with("department")
+        //->with("estimate")
+        ->get();
+            return [
+                "payload" => $equipment,
+                "status" => "200_1"
+            ];
+    }
+    public function allIncident(){
+        $equipment=Equipment::select()->where('ClaimOrIncident', "Incident")->with("typeOfEquipment")
+        ->with("brand")
+        ->with("natureOfDamage")
+        ->with("department")
+        //->with("estimate")
+        ->get();
+            return [
+                "payload" => $equipment,
+                "status" => "200_1"
+            ];
+    }
+
     public function nature_of_damage_confirmAndSave($NatureOfDamage){
         $validator = Validator::make($NatureOfDamage, [
             "name" => "required:nature_of_damages,name",
@@ -240,7 +268,7 @@ class EquipmentController extends Controller
             "payload" => $natureOfDamage,
             "status" => "200",
             "IsReturnErrorRespone" => false
-            
+
         ];
     }
     public function nature_of_damage_confirmAndUpdate($NatureOfDamage){

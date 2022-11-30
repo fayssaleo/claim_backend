@@ -10,5 +10,7 @@ Route::group([
 
 ], function ($router) {
     Route::post('/createOrUpdateEquipment', [EquipmentController::class, 'createOrUpdateEquipment']);
+    Route::get('/allClaim', [EquipmentController::class, 'allClaim']);
+    Route::get('/allIncident', [EquipmentController::class, 'allIncident']);
 
 });

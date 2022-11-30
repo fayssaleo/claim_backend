@@ -31,8 +31,8 @@ class AutomobileController extends Controller
 
 
 
-            if($request->nature_of_damages["id"]==0){
-                $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndSave($request->nature_of_damages);
+            if($request->nature_of_damage["id"]==0){
+                $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndSave($request->nature_of_damage);
                 if($nature_of_damage_returnedValue["IsReturnErrorRespone"]){
                     return [
                         "payload" => $nature_of_damage_returnedValue["payload"],
@@ -41,7 +41,8 @@ class AutomobileController extends Controller
                 }
                 $automobile->nature_of_damage_id=$nature_of_damage_returnedValue["payload"]->id;
             } else {
-                $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndUpdate($request->nature_of_damages);
+                $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndUpdate($request->nature_of_damage);
+                $automobile->nature_of_damage_id=$request->nature_of_damage["id"];
 
                 if($nature_of_damage_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -53,7 +54,7 @@ class AutomobileController extends Controller
 
 
             if($request->brand["id"]==0){
-                $brand_returnedValue=$this->brand_confirmAndSave($request->brands);
+                $brand_returnedValue=$this->brand_confirmAndSave($request->brand);
 
                 if($brand_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -64,7 +65,8 @@ class AutomobileController extends Controller
                 $automobile->brand_id=$brand_returnedValue["payload"]->id;
             }
             else{
-                $band_returnedValue=$this->band_confirmAndUpdate($request->bands);
+                $band_returnedValue=$this->brand_confirmAndUpdate($request->brand);
+                $automobile->brand_id=$request->brand["id"];
 
                 if($band_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -76,17 +78,18 @@ class AutomobileController extends Controller
 
 
             if($request->type_of_equipment["id"]==0){
-                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndSave($request->type_of_equipments);
+                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndSave($request->type_of_equipment);
                 if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
                     return [
                         "payload" => $type_of_equipment_returnedValue["payload"],
                         "status" => $type_of_equipment_returnedValue["status"]
                     ];
                 }
-                $automobile->brand_id=$type_of_equipment_returnedValue["payload"]->id;
+                $automobile->type_of_equipment_id=$type_of_equipment_returnedValue["payload"]->id;
             }
             else{
-                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndUpdate($request->type_of_equipments);
+                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndUpdate($request->type_of_equipment);
+                $automobile->type_of_equipment_id=$request->type_of_equipment["id"];
 
                 if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -245,6 +248,39 @@ class AutomobileController extends Controller
 
         ];
     }
+
+
+    public function allClaim(){
+        $automobile=Automobile::select()->where('ClaimOrIncident', "Claim")->with("typeOfEquipment")
+        ->with("brand")
+        ->with("natureOfDamage")
+        ->with("department")
+        //->with("estimate")
+        ->get();
+            return [
+                "payload" => $automobile,
+                "status" => "200_1"
+            ];
+    }
+    public function allIncident(){
+        $automobile=Automobile::select()->where('ClaimOrIncident', "Incident")->with("typeOfEquipment")
+        ->with("brand")
+        ->with("natureOfDamage")
+        ->with("department")
+        //->with("estimate")
+        ->get();
+            return [
+                "payload" => $automobile,
+                "status" => "200_1"
+            ];
+    }
+
+
+
+
+
+
+
     public function nature_of_damage_confirmAndUpdate($NatureOfDamage){
         $natureOfDamage=NatureOfDamage::find($NatureOfDamage['id']);
             if(!$natureOfDamage){

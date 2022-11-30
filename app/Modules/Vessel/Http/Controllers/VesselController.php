@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Modules\Container\Http\Controllers;
+namespace App\Modules\Vessel\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-use App\Modules\Container\Models\Container;
+use App\Modules\Vessel\Models\Vessel;
 use App\Modules\NatureOfDamage\Models\NatureOfDamage;
 use App\Modules\TypeOfEquipment\Models\TypeOfEquipment;
-
-class ContainerController extends Controller
+class VesselController extends Controller
 {
-    public function createOrUpdateContainer(Request $request){
+
+    public function createOrUpdateVessel(Request $request){
 
         if($request->id==0){
 
@@ -26,7 +26,7 @@ class ContainerController extends Controller
                 ];
             }
 
-            $container=Container::make($request->all());
+            $vessel=Vessel::make($request->all());
 
 
 
@@ -38,7 +38,7 @@ class ContainerController extends Controller
                         "status" => $nature_of_damage_returnedValue["status"]
                     ];
                 }
-                $container->nature_of_damage_id=$nature_of_damage_returnedValue["payload"]->id;
+                $vessel->nature_of_damage_id=$nature_of_damage_returnedValue["payload"]->id;
             } else {
                 $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndUpdate($request->nature_of_damages);
 
@@ -60,7 +60,7 @@ class ContainerController extends Controller
                         "status" => $brand_returnedValue["status"]
                     ];
                 }
-                $container->brand_id=$brand_returnedValue["payload"]->id;
+                $vessel->brand_id=$brand_returnedValue["payload"]->id;
             }
             else{
                 $band_returnedValue=$this->band_confirmAndUpdate($request->bands);
@@ -82,7 +82,7 @@ class ContainerController extends Controller
                         "status" => $type_of_equipment_returnedValue["status"]
                     ];
                 }
-                $container->brand_id=$type_of_equipment_returnedValue["payload"]->id;
+                $vessel->brand_id=$type_of_equipment_returnedValue["payload"]->id;
             }
             else{
                 $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndUpdate($request->type_of_equipments);
@@ -95,7 +95,7 @@ class ContainerController extends Controller
                 }
             }
 
-            $container->save();
+            $vessel->save();
         }
         else {
             $validator = Validator::make($request->all(), [
@@ -106,44 +106,44 @@ class ContainerController extends Controller
                     "status" => "406_2"
                 ];
             }
-            $container=Container::find($request->id);
-            if (!$container) {
+            $vessel=Vessel::find($request->id);
+            if (!$vessel) {
                 return [
                     "payload" => "The searched row does not exist !",
                     "status" => "404_3"
                 ];
             }
-            $container->name=$request->name;
-            $container->deductible_charge_TAT=$request->deductible_charge_TAT;
-            $container->categorie_of_equipment=$request->categorie_of_equipment;
-            $container->status=$request->status;
-            $container->incident_date=$request->incident_date;
-            $container->claim_date=$request->claim_date;
-            $container->ClaimOrIncident=$request->ClaimOrIncident;
-            $container->concerned_internal_department=$request->concerned_internal_department;
-            $container->equipement_registration=$request->equipement_registration;
-            $container->cause_damage=$request->cause_damage;
-            $container->Liability_letter_number=$request->Liability_letter_number;
-            $container->amount=$request->amount;
-            $container->currency=$request->currency;
-            $container->comment_third_party=$request->comment_third_party;
-            $container->reinvoiced=$request->reinvoiced;
-            $container->currency_Insurance=$request->currency_Insurance;
-            $container->Invoice_number=$request->Invoice_number;
-            $container->date_of_reimbursement=$request->date_of_reimbursement;
-            $container->reimbursed_amount=$request->reimbursed_amount;
-            $container->date_of_declaration=$request->date_of_declaration;
-            $container->date_of_feedback=$request->date_of_feedback;
-            $container->comment_Insurance=$request->comment_Insurance;
-            $container->Indemnification_of_insurer=$request->Indemnification_of_insurer;
-            $container->currency_indemnisation=$request->currency_indemnisation;
-            $container->deductible_charge_TAT=$request->deductible_charge_TAT;
-            $container->damage_caused_by=$request->damage_caused_by;
-            $container->comment_nature_of_damage=$request->comment_nature_of_damage;
-            $container->TAT_name_persons=$request->TAT_name_persons;
-            $container->outsourcer_company_name=$request->outsourcer_company_name;
-            $container->thirdparty_company_name=$request->thirdparty_company_name;
-            $container->thirdparty_Activity_comments=$request->thirdparty_Activity_comments;
+            $vessel->name=$request->name;
+            $vessel->deductible_charge_TAT=$request->deductible_charge_TAT;
+            $vessel->categorie_of_equipment=$request->categorie_of_equipment;
+            $vessel->status=$request->status;
+            $vessel->incident_date=$request->incident_date;
+            $vessel->claim_date=$request->claim_date;
+            $vessel->ClaimOrIncident=$request->ClaimOrIncident;
+            $vessel->concerned_internal_department=$request->concerned_internal_department;
+            $vessel->equipement_registration=$request->equipement_registration;
+            $vessel->cause_damage=$request->cause_damage;
+            $vessel->Liability_letter_number=$request->Liability_letter_number;
+            $vessel->amount=$request->amount;
+            $vessel->currency=$request->currency;
+            $vessel->comment_third_party=$request->comment_third_party;
+            $vessel->reinvoiced=$request->reinvoiced;
+            $vessel->currency_Insurance=$request->currency_Insurance;
+            $vessel->Invoice_number=$request->Invoice_number;
+            $vessel->date_of_reimbursement=$request->date_of_reimbursement;
+            $vessel->reimbursed_amount=$request->reimbursed_amount;
+            $vessel->date_of_declaration=$request->date_of_declaration;
+            $vessel->date_of_feedback=$request->date_of_feedback;
+            $vessel->comment_Insurance=$request->comment_Insurance;
+            $vessel->Indemnification_of_insurer=$request->Indemnification_of_insurer;
+            $vessel->currency_indemnisation=$request->currency_indemnisation;
+            $vessel->deductible_charge_TAT=$request->deductible_charge_TAT;
+            $vessel->damage_caused_by=$request->damage_caused_by;
+            $vessel->comment_nature_of_damage=$request->comment_nature_of_damage;
+            $vessel->TAT_name_persons=$request->TAT_name_persons;
+            $vessel->outsourcer_company_name=$request->outsourcer_company_name;
+            $vessel->thirdparty_company_name=$request->thirdparty_company_name;
+            $vessel->thirdparty_Activity_comments=$request->thirdparty_Activity_comments;
 
             if($request->nature_of_damage["id"]==0){
                 $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndSave($request->nature_of_damage);
@@ -153,7 +153,7 @@ class ContainerController extends Controller
                         "status" => $nature_of_damage_returnedValue["status"]
                     ];
                 }
-                $container->nature_of_damage_id=$nature_of_damage_returnedValue["payload"]->id;
+                $vessel->nature_of_damage_id=$nature_of_damage_returnedValue["payload"]->id;
             } else {
                 $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndUpdate($request->nature_of_damage);
 
@@ -175,7 +175,7 @@ class ContainerController extends Controller
                         "status" => $brand_returnedValue["status"]
                     ];
                 }
-                $container->brand_id=$brand_returnedValue["payload"]->id;
+                $vessel->brand_id=$brand_returnedValue["payload"]->id;
             }
             else{
                 $band_returnedValue=$this->band_confirmAndUpdate($request->band);
@@ -197,7 +197,7 @@ class ContainerController extends Controller
                         "status" => $type_of_equipment_returnedValue["status"]
                     ];
                 }
-                $container->brand_id=$type_of_equipment_returnedValue["payload"]->id;
+                $vessel->brand_id=$type_of_equipment_returnedValue["payload"]->id;
             }
             else{
                 $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndUpdate($request->type_of_equipment);
@@ -210,10 +210,10 @@ class ContainerController extends Controller
                 }
             }
 
-            $container->save();
+            $vessel->save();
 
             return [
-                "payload" => $container,
+                "payload" => $vessel,
                 "status" => "200"
             ];
 
@@ -222,32 +222,29 @@ class ContainerController extends Controller
 
 
     public function allClaim(){
-        $container=Container::select()->where('ClaimOrIncident', "Claim")->with("typeOfEquipment")
+        $vessel=Vessel::select()->where('ClaimOrIncident', "Claim")->with("typeOfEquipment")
         ->with("brand")
         ->with("natureOfDamage")
         ->with("department")
         //->with("estimate")
         ->get();
             return [
-                "payload" => $container,
+                "payload" => $vessel,
                 "status" => "200_1"
             ];
     }
     public function allIncident(){
-        $container=Container::select()->where('ClaimOrIncident', "Incident")->with("typeOfEquipment")
+        $vessel=Vessel::select()->where('ClaimOrIncident', "Incident")->with("typeOfEquipment")
         ->with("brand")
         ->with("natureOfDamage")
         ->with("department")
         //->with("estimate")
         ->get();
             return [
-                "payload" => $container,
+                "payload" => $vessel,
                 "status" => "200_1"
             ];
     }
-
-
-
 
     public function nature_of_damage_confirmAndSave($NatureOfDamage){
         $validator = Validator::make($NatureOfDamage, [
@@ -330,4 +327,5 @@ class ContainerController extends Controller
                 ];
             }
     }
+
 }

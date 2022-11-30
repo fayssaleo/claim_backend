@@ -24,7 +24,7 @@ class Equipment extends Model
         return $this->belongsTo(TypeOfEquipment::class);
     }
 
-    public function Brand()
+    public function brand()
     {
         return $this->belongsTo(Brand::class);
     }
@@ -44,7 +44,7 @@ class Equipment extends Model
     {
         return $this->hasMany(Estimate::class);
     }
-
+    
     protected $casts = [
         'created_at' => 'datetime:d/m/Y H:i',
         'updated_at' => 'datetime:d/m/Y H:i',

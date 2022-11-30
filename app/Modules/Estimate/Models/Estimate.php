@@ -14,6 +14,7 @@ class Estimate extends Model
 {
     use HasFactory;
     protected $guarded= ["id"];
+    protected $table = 'estimates';
 
 
     public function automobile()
