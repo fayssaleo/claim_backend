@@ -165,30 +165,6 @@ class VesselController extends Controller
                 }
             }
 
-
-            if($request->brand["id"]==0){
-                $brand_returnedValue=$this->brand_confirmAndSave($request->brand);
-
-                if($brand_returnedValue["IsReturnErrorRespone"]){
-                    return [
-                        "payload" => $brand_returnedValue["payload"],
-                        "status" => $brand_returnedValue["status"]
-                    ];
-                }
-                $vessel->brand_id=$brand_returnedValue["payload"]->id;
-            }
-            else{
-                $band_returnedValue=$this->band_confirmAndUpdate($request->band);
-
-                if($band_returnedValue["IsReturnErrorRespone"]){
-                    return [
-                        "payload" => $band_returnedValue["payload"],
-                        "status" => $band_returnedValue["status"]
-                    ];
-                }
-            }
-
-
             if($request->type_of_equipment["id"]==0){
                 $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndSave($request->type_of_equipment);
                 if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
