@@ -24,10 +24,10 @@ return new class extends Migration
             $table->foreign('equipment_id')->references('id')->on('equipment')->onDelete('cascade');
 
             $table->bigInteger('container_id')->unsigned()->nullable();
-            $table->foreign('container_id')->references('id')->on('container')->onDelete('cascade');
+            $table->foreign('container_id')->references('id')->on('containers')->onDelete('cascade');
 
             $table->bigInteger('automobile_id')->unsigned()->nullable();
-            $table->foreign('automobile_id')->references('id')->on('automobile')->onDelete('cascade');
+            $table->foreign('automobile_id')->references('id')->on('automobiles')->onDelete('cascade');
 
             $table->timestamps();
         });

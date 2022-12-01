@@ -100,6 +100,10 @@ class AutomobileController extends Controller
             }
 
             $automobile->save();
+            return [
+                "payload" => $automobile,
+                "status" => "200"
+            ];
         }
         else {
             $validator = Validator::make($request->all(), [
@@ -226,30 +230,6 @@ class AutomobileController extends Controller
     }
 
 
-
-
-    public function nature_of_damage_confirmAndSave($NatureOfDamage){
-        $validator = Validator::make($NatureOfDamage, [
-            "name" => "required:nature_of_damages,name",
-        ]);
-        if ($validator->fails()) {
-            return [
-                "payload" => $validator->errors(),
-                "status" => "406_2",
-                "IsReturnErrorRespone" => true
-            ];
-        }
-        $natureOfDamage=NatureOfDamage::make($NatureOfDamage);
-        $natureOfDamage->save();
-        return [
-            "payload" => $natureOfDamage,
-            "status" => "200",
-            "IsReturnErrorRespone" => false
-
-        ];
-    }
-
-
     public function allClaim(){
         $automobile=Automobile::select()->where('ClaimOrIncident', "Claim")->with("typeOfEquipment")
         ->with("brand")
@@ -275,11 +255,43 @@ class AutomobileController extends Controller
             ];
     }
 
+    public function delete(Request $request){
+        $automobile=Automobile::find($request->id);
+        if(!$automobile){
+            return [
+                "payload" => "The searched row does not exist !",
+                "status" => "404_4"
+            ];
+        }
+        else {
+            $automobile->delete();
+            return [
+                "payload" => "Deleted successfully",
+                "status" => "200_4"
+            ];
+        }
+    }
 
+    public function nature_of_damage_confirmAndSave($NatureOfDamage){
+        $validator = Validator::make($NatureOfDamage, [
+            "name" => "required:nature_of_damages,name",
+        ]);
+        if ($validator->fails()) {
+            return [
+                "payload" => $validator->errors(),
+                "status" => "406_2",
+                "IsReturnErrorRespone" => true
+            ];
+        }
+        $natureOfDamage=NatureOfDamage::make($NatureOfDamage);
+        $natureOfDamage->save();
+        return [
+            "payload" => $natureOfDamage,
+            "status" => "200",
+            "IsReturnErrorRespone" => false
 
-
-
-
+        ];
+    }
 
     public function nature_of_damage_confirmAndUpdate($NatureOfDamage){
         $natureOfDamage=NatureOfDamage::find($NatureOfDamage['id']);
@@ -300,7 +312,6 @@ class AutomobileController extends Controller
                 ];
             }
     }
-
 
     public function brand_confirmAndSave($Brand){
         $validator = Validator::make($Brand, [
@@ -342,7 +353,6 @@ class AutomobileController extends Controller
                 ];
             }
     }
-
 
     public function type_of_equipment_confirmAndSave($Type_of_equipment){
         $validator = Validator::make($Type_of_equipment, [

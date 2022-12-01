@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('automobile', function (Blueprint $table) {
-           
+        Schema::create('automobiles', function (Blueprint $table) {
+
             $table->bigIncrements("id");
             $table->string("name")->nullable();
             $table->string("categorie_of_equipment")->nullable();

@@ -12,5 +12,6 @@ Route::group([
     Route::post('/createOrUpdateEquipment', [EquipmentController::class, 'createOrUpdateEquipment']);
     Route::get('/allClaim', [EquipmentController::class, 'allClaim']);
     Route::get('/allIncident', [EquipmentController::class, 'allIncident']);
+    Route::post('/delete', [EquipmentController::class, 'delete']);
 
 });

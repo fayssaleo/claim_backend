@@ -98,6 +98,10 @@ class EquipmentController extends Controller
             }
 
             $equipment->save();
+            return [
+                "payload" => $equipment,
+                "status" => "200"
+            ];
         }
         else {
             $validator = Validator::make($request->all(), [
@@ -249,6 +253,23 @@ class EquipmentController extends Controller
                 "payload" => $equipment,
                 "status" => "200_1"
             ];
+    }
+
+    public function delete(Request $request){
+        $equipment=Equipment::find($request->id);
+        if(!$equipment){
+            return [
+                "payload" => "The searched row does not exist !",
+                "status" => "404_4"
+            ];
+        }
+        else {
+            $equipment->delete();
+            return [
+                "payload" => "Deleted successfully",
+                "status" => "200_4"
+            ];
+        }
     }
 
     public function nature_of_damage_confirmAndSave($NatureOfDamage){
