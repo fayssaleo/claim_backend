@@ -78,7 +78,7 @@ class EstimateController extends Controller
         $EstimateModel = new stdClass();
 
 
-        $EstimateModel->estimateObject=$estimate;
+        $EstimateModel->estimate=$estimate;
         $EstimateModel->estimate_amount = $estimate->equipment_purchase_costs+$estimate->installation_and_facilities_costs+$estimate->rransportation_costs;
         $EstimateModel->fileEstimate=$estimate->fileEstimates;
 
