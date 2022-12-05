@@ -108,10 +108,12 @@ class EstimateController extends Controller
             ];
         }
 
+        $estimate->temporary_or_permanent=$request->temporary_or_permanent;
         $estimate->equipment_purchase_costs=$request->equipment_purchase_costs;
         $estimate->installation_and_facilities_costs=$request->installation_and_facilities_costs;
         $estimate->rransportation_costs=$request->rransportation_costs;
-        $estimate->claime_id=$request->claime_id;
+        $estimate->currency_estimate=$request->currency_estimate;
+        $estimate->equipment_id=$request->equipment_id;
 
 
         $estimate->save();

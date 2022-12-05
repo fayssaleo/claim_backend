@@ -227,7 +227,6 @@ class EquipmentController extends Controller
             ];
 
         }
-        return $equipment;
     }
 
     public function allClaim(){
@@ -384,7 +383,7 @@ class EquipmentController extends Controller
                 ];
             }
             else if ($type_of_equipment){
-                //$type_of_equipment->name=$Type_of_equipment['name'];
+              //  $type_of_equipment->name=$Type_of_equipment['name'];
                 $type_of_equipment->save();
                 return [
                     "payload"=>$type_of_equipment,
