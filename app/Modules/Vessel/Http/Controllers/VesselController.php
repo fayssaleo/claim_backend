@@ -175,7 +175,6 @@ class VesselController extends Controller
         }
     }
 
-
     public function allClaim(){
         $vessel=Vessel::select()->where('ClaimOrIncident', "Claim")->with("typeOfEquipment")
         ->with("natureOfDamage")
@@ -187,6 +186,7 @@ class VesselController extends Controller
                 "status" => "200_1"
             ];
     }
+
     public function allIncident(){
         $vessel=Vessel::select()->where('ClaimOrIncident', "Incident")->with("typeOfEquipment")
         ->with("natureOfDamage")
@@ -246,7 +246,7 @@ class VesselController extends Controller
                 ];
             }
             else if ($natureOfDamage){
-                $natureOfDamage->name=$NatureOfDamage['name'];
+               // $natureOfDamage->name=$NatureOfDamage['name'];
                 $natureOfDamage->save();
                 return [
                     "payload"=>$natureOfDamage,
@@ -288,7 +288,7 @@ class VesselController extends Controller
                 ];
             }
             else if ($type_of_equipment){
-                $type_of_equipment->name=$Type_of_equipment['name'];
+               // $type_of_equipment->name=$Type_of_equipment['name'];
                 $type_of_equipment->save();
                 return [
                     "payload"=>$type_of_equipment,

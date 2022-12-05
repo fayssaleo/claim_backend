@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('estimate', function (Blueprint $table) {
+        Schema::create('estimates', function (Blueprint $table) {
             $table->bigIncrements("id");
             $table->string("temporary_or_permanent")->nullable();
             $table->double('equipment_purchase_costs', 20, 4)->nullable();
@@ -40,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('estimate');
+        Schema::dropIfExists('estimates');
     }
 };

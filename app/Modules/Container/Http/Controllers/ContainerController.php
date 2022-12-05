@@ -17,7 +17,7 @@ class ContainerController extends Controller
         if($request->id==0){
 
             $validator = Validator::make($request->all(), [
-                "name" => "required:brand,name",
+              //  "name" => "required:brand,name",
             ]);
             if ($validator->fails()) {
                 return [
@@ -54,7 +54,7 @@ class ContainerController extends Controller
 
 
 
-            if($request->type_of_equipment["id"]==0){
+           /*  if($request->type_of_equipment["id"]==0){
                 $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndSave($request->type_of_equipment);
                 if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -73,7 +73,7 @@ class ContainerController extends Controller
                         "status" => $type_of_equipment_returnedValue["status"]
                     ];
                 }
-            }
+            } */
 
             $container->save();
             return [
@@ -204,9 +204,9 @@ class ContainerController extends Controller
         }
     }
 
-
     public function allClaim(){
-        $container=Container::select()->where('ClaimOrIncident', "Claim")->with("typeOfEquipment")
+        $container=Container::select()->where('ClaimOrIncident', "Claim")
+        ->with("typeOfEquipment")
         ->with("natureOfDamage")
         ->with("department")
         //->with("estimate")
@@ -216,12 +216,16 @@ class ContainerController extends Controller
                 "status" => "200_1"
             ];
     }
+
     public function allIncident(){
-        $container=Container::select()->where('ClaimOrIncident', "Incident")->with("typeOfEquipment")
+        $container=Container::select()->where('ClaimOrIncident', "Incident")
+        //->with("typeOfEquipment")
         ->with("natureOfDamage")
-        ->with("department")
+        //->with("department")
         //->with("estimate")
         ->get();
+       // $container->nature_of_damage=$container->natureOfDamage;
+
             return [
                 "payload" => $container,
                 "status" => "200_1"
@@ -244,7 +248,6 @@ class ContainerController extends Controller
             ];
         }
     }
-
 
     public function nature_of_damage_confirmAndSave($NatureOfDamage){
         $validator = Validator::make($NatureOfDamage, [
@@ -276,7 +279,7 @@ class ContainerController extends Controller
                 ];
             }
             else if ($natureOfDamage){
-                $natureOfDamage->name=$NatureOfDamage['name'];
+               // $natureOfDamage->name=$NatureOfDamage['name'];
                 $natureOfDamage->save();
                 return [
                     "payload"=>$natureOfDamage,
@@ -318,7 +321,7 @@ class ContainerController extends Controller
                 ];
             }
             else if ($type_of_equipment){
-                $type_of_equipment->name=$Type_of_equipment['name'];
+              //  $type_of_equipment->name=$Type_of_equipment['name'];
                 $type_of_equipment->save();
                 return [
                     "payload"=>$type_of_equipment,

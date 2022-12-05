@@ -10,6 +10,7 @@ use App\Modules\Brand\Models\Brand;
 use App\Modules\Automobile\Models\Automobile;
 use App\Modules\NatureOfDamage\Models\NatureOfDamage;
 use App\Modules\TypeOfEquipment\Models\TypeOfEquipment;
+
 class AutomobileController extends Controller
 {
 
@@ -18,7 +19,7 @@ class AutomobileController extends Controller
         if($request->id==0){
 
             $validator = Validator::make($request->all(), [
-                "name" => "required:brand,name",
+              //  "name" => "required:brand,name",
             ]);
             if ($validator->fails()) {
                 return [
@@ -229,7 +230,6 @@ class AutomobileController extends Controller
         }
     }
 
-
     public function allClaim(){
         $automobile=Automobile::select()->where('ClaimOrIncident', "Claim")->with("typeOfEquipment")
         ->with("brand")
@@ -242,6 +242,7 @@ class AutomobileController extends Controller
                 "status" => "200_1"
             ];
     }
+
     public function allIncident(){
         $automobile=Automobile::select()->where('ClaimOrIncident', "Incident")->with("typeOfEquipment")
         ->with("brand")
@@ -303,7 +304,7 @@ class AutomobileController extends Controller
                 ];
             }
             else if ($natureOfDamage){
-                $natureOfDamage->name=$NatureOfDamage['name'];
+                //$natureOfDamage->name=$NatureOfDamage['name'];
                 $natureOfDamage->save();
                 return [
                     "payload"=>$natureOfDamage,
@@ -344,7 +345,7 @@ class AutomobileController extends Controller
                 ];
             }
             else if ($brand){
-                $brand->name=$Brand['name'];
+              //  $brand->name=$Brand['name'];
                 $brand->save();
                 return [
                     "payload"=>$brand,
@@ -385,7 +386,7 @@ class AutomobileController extends Controller
                 ];
             }
             else if ($type_of_equipment){
-                $type_of_equipment->name=$Type_of_equipment['name'];
+               // $type_of_equipment->name=$Type_of_equipment['name'];
                 $type_of_equipment->save();
                 return [
                     "payload"=>$type_of_equipment,

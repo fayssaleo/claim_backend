@@ -10,6 +10,7 @@ use App\Modules\TypeOfEquipment\Models\TypeOfEquipment;
 use App\Modules\Department\Models\Department;
 use App\Modules\NatureOfDamage\Models\NatureOfDamage;
 use App\Modules\Estimate\Models\Estimate;
+
 class Vessel extends Model
 {
     use HasFactory;

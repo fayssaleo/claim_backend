@@ -8,16 +8,17 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Modules\Estimate\Models\Estimate;
 use \stdClass;
+use App\Libs\UploadTrait;
+use App\Modules\Estimate\Models\fileEstimates;
 
 class EstimateController extends Controller
 {
 
-    
+
     public function index(){
         $estimtesWithAmount=collect ([]);
-        $estimate=Estimate::with("claim")   
-        ->get();
-        for ($i=0; $i < count($estimate); $i++) { 
+        $estimate=Estimate::all();
+         for ($i=0; $i < count($estimate); $i++) {
             $EstimateModel = new stdClass();
 
 
@@ -52,7 +53,7 @@ class EstimateController extends Controller
 
     public function create(Request $request){
         $validator = Validator::make($request->all(), [
-            
+
         ]);
         if ($validator->fails()) {
             return [
@@ -62,8 +63,29 @@ class EstimateController extends Controller
         }
         $estimate=Estimate::make($request->all());
         $estimate->save();
+        if($request->file()) {
+            for ($i=0;$i<count($request->photos);$i++){
+                $file=$request->photos[$i];
+                $filename=time()."_".$file->getClientOriginalName();
+                $this->uploadOne($file, config('cdn.fileEstimates.path'),$filename);
+                $fileEstimates=new fileEstimates();
+                $fileEstimates->filename=$filename;
+                $fileEstimates->estimate_id=$estimate->id;
+                $fileEstimates->save();
+            }
+        }
+
+        $EstimateModel = new stdClass();
+
+
+        $EstimateModel->estimateObject=$estimate;
+        $EstimateModel->estimate_amount = $estimate->equipment_purchase_costs+$estimate->installation_and_facilities_costs+$estimate->rransportation_costs;
+        $EstimateModel->fileEstimate=$estimate->fileEstimates;
+
+      //  dd($EstimateModel);
+
         return [
-            "payload" => $estimate,
+            "payload" => $EstimateModel,
             "status" => "200"
         ];
     }
@@ -85,7 +107,7 @@ class EstimateController extends Controller
                 "status" => "404_3"
             ];
         }
-       
+
         $estimate->equipment_purchase_costs=$request->equipment_purchase_costs;
         $estimate->installation_and_facilities_costs=$request->installation_and_facilities_costs;
         $estimate->rransportation_costs=$request->rransportation_costs;

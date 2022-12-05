@@ -31,14 +31,6 @@ class Estimate extends Model
     }
 
 
-    protected $fillable = [
-        'equipment_purchase_costs',
-        'installation_and_facilities_costs',
-        'rransportation_costs',
-        'temporary_or_permanent',
-        "claim_id",
-    ];
-
     protected $casts = [
 
         'created_at' => 'datetime:d/m/Y H:i',
