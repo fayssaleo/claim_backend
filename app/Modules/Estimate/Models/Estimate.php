@@ -9,6 +9,7 @@ use App\Modules\Valuation\Models\Valuation;
 use App\Modules\Automobile\Models\Automobile;
 use App\Modules\Equipment\Models\Equipment;
 use App\Modules\Container\Models\Container;
+use App\Modules\Estimate\Models\fileEstimates;
 
 class Estimate extends Model
 {
@@ -30,6 +31,10 @@ class Estimate extends Model
         return $this->belongsTo(Container::class);
     }
 
+    public function fileEstimates()
+    {
+        return $this->hasOne(fileEstimates::class);
+    }
 
     protected $casts = [
 

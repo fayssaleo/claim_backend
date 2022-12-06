@@ -19,18 +19,18 @@ class EstimateController extends Controller
 
     public function index(){
         $estimtesWithAmount=collect ([]);
-        $estimate=Estimate::all();
+        $estimate=Estimate::select()
+        ->with("fileEstimates")
+        ->get();
          for ($i=0; $i < count($estimate); $i++) {
             $EstimateModel = new stdClass();
-
 
             $EstimateModel->estimate=$estimate[$i];
             $EstimateModel->estimate_amount = $estimate[$i]->equipment_purchase_costs+$estimate[$i]->installation_and_facilities_costs+$estimate[$i]->rransportation_costs;
 
-
-            //array_push($estimtesWithAmount,$EstimateModel);
             $estimtesWithAmount->push($EstimateModel);
         }
+
         return [
             "payload" => $estimtesWithAmount,
             "status" => "200_00"
@@ -82,7 +82,10 @@ class EstimateController extends Controller
 
     public function Addfile(Request $request){
 
-        $estimate=Estimate::find($request->estimate_id);
+        $estimate=Estimate::select()->where('id', $request->estimate_id)
+        ->with("fileEstimates")
+        ->get();
+      //  $estimate=Estimate::find($request->estimate_id);
         if(!$estimate){
             return [
                 "payload" => "The searched row does not exist !",
@@ -90,18 +93,67 @@ class EstimateController extends Controller
             ];
         }
 
-        if($request->file()) {
-            $file=$request->file;
-            $filename=time()."_".$file->getClientOriginalName();
-            $this->uploadOne($file, config('cdn.fileEstimates.path'),$filename,'public_uploads_fileEstimates');
-            $fileEstimates=new fileEstimates();
-            $fileEstimates->filename=$filename;
-            $fileEstimates->estimate_id=$request->estimate_id;
-            $fileEstimates->save();
+         if ( $estimate[0]->fileEstimates == null) {
+
+            if($request->file()) {
+
+                $file=$request->file;
+                $filename=time()."_".$file->getClientOriginalName();
+                $this->uploadOne($file, config('cdn.fileEstimates.path'),$filename,'public_uploads_fileEstimates');
+                $fileEstimates=new fileEstimates();
+                $fileEstimates->filename=$filename;
+                $fileEstimates->estimate_id=$request->estimate_id;
+                $fileEstimates->save();
+
+            }
+            return [
+                "payload" => $fileEstimates,
+                "status" => "done"
+            ];
+        }else{
+
+            $fileestimates=fileEstimates::find($estimate[0]->fileEstimates->id);
+
+                $fileestimates->delete();
+                if($request->file()) {
+
+                    $file=$request->file;
+                    $filename=time()."_".$file->getClientOriginalName();
+                    $this->uploadOne($file, config('cdn.fileEstimates.path'),$filename,'public_uploads_fileEstimates');
+                    $fileEstimates=new fileEstimates();
+                    $fileEstimates->filename=$filename;
+                    $fileEstimates->estimate_id=$request->estimate_id;
+                    $fileEstimates->save();
+
+                }
+                return [
+                    "payload" => $fileEstimates,
+                    "status" => "done"
+                ];
+
+
         }
+
 
     }
 
+    public function deleteFile(Request $request){
+        $fileestimates=fileEstimates::find($request->id);
+
+        if(!$fileestimates){
+            return [
+                "payload" => "The searched row does not exist !",
+                "status" => "404_4"
+            ];
+        }
+        else {
+            $fileestimates->delete();
+            return [
+                "payload" => "Deleted successfully",
+                "status" => "200_4"
+            ];
+        }
+    }
     public function sendEstimateFileStoragePath(){
         return [
             "payload" => asset("/storage/cdn/fileEstimates/"),
@@ -141,6 +193,8 @@ class EstimateController extends Controller
             "status" => "200"
         ];
     }
+
+
 
     public function delete(Request $request){
         $estimate=Estimate::find($request->id);

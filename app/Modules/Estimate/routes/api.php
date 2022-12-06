@@ -13,9 +13,10 @@ Route::group([
 ], function ($router) {
     Route::get('/', [EstimateController::class, 'index']);
     Route::get('/{id}', [EstimateController::class, 'get']);
-    Route::get('/file/sendEstimateFileStoragePath', [EstimateController::class, 'sendEstimateFileStoragePath']);
-    Route::post('/file/Addfile', [EstimateController::class, 'Addfile']);
     Route::post('/create', [EstimateController::class, 'create']);
     Route::post('/update', [EstimateController::class, 'update']);
     Route::post('/delete', [EstimateController::class, 'delete']);
+    Route::get('/file/sendEstimateFileStoragePath', [EstimateController::class, 'sendEstimateFileStoragePath']);
+    Route::post('/file/Addfile', [EstimateController::class, 'Addfile']);
+    Route::post('/file/delete', [EstimateController::class, 'deleteFile']);
 });
