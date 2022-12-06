@@ -211,6 +211,7 @@ class AutomobileController extends Controller
             }
             else{
                 $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndUpdate($request->type_of_equipment);
+                $automobile->brand_id=$type_of_equipment_returnedValue["payload"]->id;
 
                 if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
                     return [

@@ -41,6 +41,7 @@ class ContainerController extends Controller
                 $container->nature_of_damage_id=$nature_of_damage_returnedValue["payload"]->id;
             } else {
                 $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndUpdate($request->nature_of_damage);
+                $container->nature_of_damage_id=$request->nature_of_damage["id"];
 
                 if($nature_of_damage_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -150,49 +151,9 @@ class ContainerController extends Controller
             }
 
 
-            if($request->brand["id"]==0){
-                $brand_returnedValue=$this->brand_confirmAndSave($request->brand);
-
-                if($brand_returnedValue["IsReturnErrorRespone"]){
-                    return [
-                        "payload" => $brand_returnedValue["payload"],
-                        "status" => $brand_returnedValue["status"]
-                    ];
-                }
-                $container->brand_id=$brand_returnedValue["payload"]->id;
-            }
-            else{
-                $band_returnedValue=$this->band_confirmAndUpdate($request->band);
-
-                if($band_returnedValue["IsReturnErrorRespone"]){
-                    return [
-                        "payload" => $band_returnedValue["payload"],
-                        "status" => $band_returnedValue["status"]
-                    ];
-                }
-            }
 
 
-            if($request->type_of_equipment["id"]==0){
-                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndSave($request->type_of_equipment);
-                if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
-                    return [
-                        "payload" => $type_of_equipment_returnedValue["payload"],
-                        "status" => $type_of_equipment_returnedValue["status"]
-                    ];
-                }
-                $container->brand_id=$type_of_equipment_returnedValue["payload"]->id;
-            }
-            else{
-                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndUpdate($request->type_of_equipment);
 
-                if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
-                    return [
-                        "payload" => $type_of_equipment_returnedValue["payload"],
-                        "status" => $type_of_equipment_returnedValue["status"]
-                    ];
-                }
-            }
 
             $container->save();
 
@@ -209,7 +170,7 @@ class ContainerController extends Controller
         ->with("typeOfEquipment")
         ->with("natureOfDamage")
         ->with("department")
-        //->with("estimate")
+        ->with("estimate")
         ->get();
             return [
                 "payload" => $container,
@@ -219,10 +180,10 @@ class ContainerController extends Controller
 
     public function allIncident(){
         $container=Container::select()->where('ClaimOrIncident', "Incident")
-        //->with("typeOfEquipment")
+        ->with("typeOfEquipment")
         ->with("natureOfDamage")
-        //->with("department")
-        //->with("estimate")
+        ->with("department")
+        ->with("estimate")
         ->get();
        // $container->nature_of_damage=$container->natureOfDamage;
 

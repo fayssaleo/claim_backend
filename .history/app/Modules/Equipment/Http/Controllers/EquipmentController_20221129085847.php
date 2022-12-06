@@ -145,6 +145,7 @@ class EquipmentController extends Controller
             $equipment->thirdparty_company_name=$request->thirdparty_company_name;
             $equipment->thirdparty_Activity_comments=$request->thirdparty_Activity_comments;
 
+            
             return [
                 "payload" => $equipment,
                 "status" => "200"

@@ -39,6 +39,7 @@ class VesselController extends Controller
                 $vessel->nature_of_damage_id=$nature_of_damage_returnedValue["payload"]->id;
             } else {
                 $nature_of_damage_returnedValue=$this->nature_of_damage_confirmAndUpdate($request->nature_of_damage);
+                $vessel->nature_of_damage_id=$request->nature_of_damage["id"];
 
                 if($nature_of_damage_returnedValue["IsReturnErrorRespone"]){
                     return [
@@ -48,26 +49,7 @@ class VesselController extends Controller
                 }
             }
 
-            if($request->type_of_equipment["id"]==0){
-                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndSave($request->type_of_equipment);
-                if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
-                    return [
-                        "payload" => $type_of_equipment_returnedValue["payload"],
-                        "status" => $type_of_equipment_returnedValue["status"]
-                    ];
-                }
-                $vessel->type_of_equipment_id=$type_of_equipment_returnedValue["payload"]->id;
-            }
-            else{
-                $type_of_equipment_returnedValue=$this->type_of_equipment_confirmAndUpdate($request->type_of_equipment);
 
-                if($type_of_equipment_returnedValue["IsReturnErrorRespone"]){
-                    return [
-                        "payload" => $type_of_equipment_returnedValue["payload"],
-                        "status" => $type_of_equipment_returnedValue["status"]
-                    ];
-                }
-            }
 
             $vessel->save();
 
