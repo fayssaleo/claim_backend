@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('fileEstimates', function (Blueprint $table) {
+        Schema::create('file_estimates', function (Blueprint $table) {
             $table->bigIncrements("id");
             $table->string("filename");
             $table->bigInteger('estimate_id')->unsigned()->nullable();

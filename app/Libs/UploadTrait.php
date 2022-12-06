@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 trait UploadTrait
 {
 
-    public function uploadOne(&$uploadedFile, $folder = null, $filename = null, $disk = 'public')
+    public function uploadOne(&$uploadedFile, $folder = null, $filename = null, $disk = null)
     {
         if(!$uploadedFile instanceof UploadedFile){
             return ['relative_path'=> null,'file_name' => null];

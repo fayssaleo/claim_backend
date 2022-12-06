@@ -56,7 +56,15 @@ return [
             'throw' => false,
         ],
 
+        'public_uploads_fileEstimates' => [
+            'driver' => 'local',
+            'root'   => storage_path('app/public/cdn/fileEstimates'),
+            'visibility' => 'public',
+
+        ],
+
     ],
+
 
     /*
     |--------------------------------------------------------------------------

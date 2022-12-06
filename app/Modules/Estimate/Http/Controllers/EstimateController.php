@@ -14,6 +14,8 @@ use App\Modules\Estimate\Models\fileEstimates;
 class EstimateController extends Controller
 {
 
+    use UploadTrait;
+
 
     public function index(){
         $estimtesWithAmount=collect ([]);
@@ -63,30 +65,47 @@ class EstimateController extends Controller
         }
         $estimate=Estimate::make($request->all());
         $estimate->save();
-        if($request->file()) {
-            for ($i=0;$i<count($request->photos);$i++){
-                $file=$request->photos[$i];
-                $filename=time()."_".$file->getClientOriginalName();
-                $this->uploadOne($file, config('cdn.fileEstimates.path'),$filename);
-                $fileEstimates=new fileEstimates();
-                $fileEstimates->filename=$filename;
-                $fileEstimates->estimate_id=$estimate->id;
-                $fileEstimates->save();
-            }
-        }
 
         $EstimateModel = new stdClass();
 
 
         $EstimateModel->estimate=$estimate;
         $EstimateModel->estimate_amount = $estimate->equipment_purchase_costs+$estimate->installation_and_facilities_costs+$estimate->rransportation_costs;
-        $EstimateModel->fileEstimate=$estimate->fileEstimates;
 
       //  dd($EstimateModel);
 
         return [
             "payload" => $EstimateModel,
             "status" => "200"
+        ];
+    }
+
+    public function Addfile(Request $request){
+
+        $estimate=Estimate::find($request->estimate_id);
+        if(!$estimate){
+            return [
+                "payload" => "The searched row does not exist !",
+                "status" => "404_1"
+            ];
+        }
+
+        if($request->file()) {
+            $file=$request->file;
+            $filename=time()."_".$file->getClientOriginalName();
+            $this->uploadOne($file, config('cdn.fileEstimates.path'),$filename,'public_uploads_fileEstimates');
+            $fileEstimates=new fileEstimates();
+            $fileEstimates->filename=$filename;
+            $fileEstimates->estimate_id=$request->estimate_id;
+            $fileEstimates->save();
+        }
+
+    }
+
+    public function sendEstimateFileStoragePath(){
+        return [
+            "payload" => asset("/storage/cdn/fileEstimates/"),
+            "status" => "200_1"
         ];
     }
 
