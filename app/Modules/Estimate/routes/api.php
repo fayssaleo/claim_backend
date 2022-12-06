@@ -11,7 +11,9 @@ Route::group([
     'prefix' => 'api/estimates'
 
 ], function ($router) {
-    Route::get('/', [EstimateController::class, 'index']);
+    Route::get('/indexEquipment', [EstimateController::class, 'indexEquipment']);
+    Route::get('/indexContainer', [EstimateController::class, 'indexContainer']);
+    Route::get('/indexAutomobile', [EstimateController::class, 'indexAutomobile']);
     Route::get('/{id}', [EstimateController::class, 'get']);
     Route::post('/create', [EstimateController::class, 'create']);
     Route::post('/update', [EstimateController::class, 'update']);

@@ -17,9 +17,10 @@ class EstimateController extends Controller
     use UploadTrait;
 
 
-    public function index(){
+    public function indexEquipment(){
         $estimtesWithAmount=collect ([]);
         $estimate=Estimate::select()
+        ->where('equipment_id',"<>", null)
         ->with("fileEstimates")
         ->get();
          for ($i=0; $i < count($estimate); $i++) {
@@ -36,7 +37,46 @@ class EstimateController extends Controller
             "status" => "200_00"
         ];
     }
+    public function indexContainer(){
+        $estimtesWithAmount=collect ([]);
+        $estimate=Estimate::select()
+        ->where('container_id',"<>", null)
+        ->with("fileEstimates")
+        ->get();
+         for ($i=0; $i < count($estimate); $i++) {
+            $EstimateModel = new stdClass();
 
+            $EstimateModel->estimate=$estimate[$i];
+            $EstimateModel->estimate_amount = $estimate[$i]->equipment_purchase_costs+$estimate[$i]->installation_and_facilities_costs+$estimate[$i]->rransportation_costs;
+
+            $estimtesWithAmount->push($EstimateModel);
+        }
+
+        return [
+            "payload" => $estimtesWithAmount,
+            "status" => "200_00"
+        ];
+    }
+    public function indexAutomobile(){
+        $estimtesWithAmount=collect ([]);
+        $estimate=Estimate::select()
+        ->where('automobile_id',"<>", null)
+        ->with("fileEstimates")
+        ->get();
+         for ($i=0; $i < count($estimate); $i++) {
+            $EstimateModel = new stdClass();
+
+            $EstimateModel->estimate=$estimate[$i];
+            $EstimateModel->estimate_amount = $estimate[$i]->equipment_purchase_costs+$estimate[$i]->installation_and_facilities_costs+$estimate[$i]->rransportation_costs;
+
+            $estimtesWithAmount->push($EstimateModel);
+        }
+
+        return [
+            "payload" => $estimtesWithAmount,
+            "status" => "200_00"
+        ];
+    }
     public function get($id){
         $estimate=Estimate::find($id);
         if(!$estimate){
